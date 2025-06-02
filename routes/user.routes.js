@@ -1,6 +1,13 @@
 const express = require('express');
+
+const {loginUser,createUser, logoutUser} = require("../controllers/user.controller")
+
 const router = express();
 
-router.get("/login",async (req,res)=>{
-    let {name,email,password}=req.body()
-})
+
+router.post("/login", loginUser);
+router.post("/signUp", createUser);
+router.get("/logout",logoutUser)
+
+
+module.exports = router;
