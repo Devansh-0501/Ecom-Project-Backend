@@ -11,5 +11,18 @@ const getAllUsers = async (req,res) => {
         res.status(500).json({ message: "Error retrieving users" ,error});
     }
 }
+const deleteUser = async (req,res)=>{
+    try {
+        let { id }=req.params;
+        const deletedUser = await userModel.findByIdAndDelete(id)
+        console.log(deletedUser)
+        res.status(200).json({message:"User Deleted",deletedUser})
 
-module.exports = getAllUsers;
+        
+    } catch (error) {
+         res.status(404).json({message : "Internal server error",error})
+        
+    }
+}
+
+module.exports = {getAllUsers,deleteUser};
