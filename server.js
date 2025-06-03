@@ -3,6 +3,7 @@ const dotenv=require('dotenv');
 const ConnectDB = require('./config/db');
 const productRoutes=require("./routes/product.routes.js")
 const userRoutes=require("./routes/user.routes.js")
+const adminRoutes = require("./routes/admin.routes.js")
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 
@@ -27,6 +28,7 @@ app.use(cors({
 
 app.use("/api",productRoutes)
 app.use("/api",userRoutes)
+app.use("/api",adminRoutes)
 
 
 app.listen(3000,()=>{
