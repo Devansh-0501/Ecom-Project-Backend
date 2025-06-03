@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken")
 
 
 
-const authenticateUser = async (req , res,next) =>{
+const authenticateUser = async (req,res,next) =>{
    try {
     
-    let token = req.cookie.token;
-    console.log(token,req.cookie);
+    let token = req.cookies.token;
+    console.log(token , req.cookie);
 
     if(!token) res.status(401).json({message:"User not authenticated"})
     
