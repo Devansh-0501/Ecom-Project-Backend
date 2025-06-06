@@ -32,7 +32,7 @@ const createProduct = async (req,res)=>{
 const getProduct = async (req,res)=>{
     try{
     let product = await productModel.find();
-    res.status(200).json({message:"User viewed successfully",product})
+    res.status(200).json({message:"Product viewed successfully",product})
     }
     catch(error)
     {
@@ -67,4 +67,15 @@ const updateProduct = async (req,res) => {
         
     }
 }
-module.exports = { createProduct, getProduct,deleteProduct,updateProduct };
+
+const singleProduct = async (req,res) => {
+    const {id} =req.params;
+    try {
+        let product = await productModel.findById(id)
+        res.status(200).json({message:"Product fetched successfully" , product})
+    } catch (error) {
+         res.status(404).json({message : "Internal server error"})
+    }
+
+}
+module.exports = { createProduct, getProduct,deleteProduct,updateProduct,singleProduct };

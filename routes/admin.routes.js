@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-router.get("/admin", authenticateUser, isAdmin , getAllUsers )
+router.get("/admin" , authenticateUser, isAdmin , getAllUsers )
 router.delete("/admin/:id", authenticateUser, isAdmin, deleteUser)
 
 
