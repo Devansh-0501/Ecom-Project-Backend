@@ -1,13 +1,13 @@
 const express = require("express");
-const isAdmin = require("../middleware/isAdmin");
+
 const {getAllUsers,deleteUser} = require("../controllers/admin.controller");
-const authenticateUser = require("../middleware/authUser");
+const {authenticateUser,isAdmin} = require("../middleware/authUser");
 
 const router = express.Router();
 
 
 
-router.get("/admin" , authenticateUser, isAdmin , getAllUsers )
+router.get("/admin/AllUsers" ,  authenticateUser ,isAdmin, getAllUsers )
 router.delete("/admin/:id", authenticateUser, isAdmin, deleteUser)
 
 

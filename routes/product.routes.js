@@ -1,7 +1,7 @@
 const express = require('express');
 const {getProduct,createProduct, deleteProduct, updateProduct, singleProduct} = require('../controllers/product.controller');
-const authenticateUser = require('../middleware/authUser.js');
-const isAdmin = require('../middleware/isAdmin');
+const {authenticateUser,isAdmin} = require('../middleware/authUser.js');
+
 const router = express.Router();
 
 
@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 
-router.post("/",authenticateUser,isAdmin,createProduct)
+router.post("/", authenticateUser,isAdmin,createProduct)
 
 router.get("/", getProduct)
 router.get("/:id",authenticateUser, singleProduct)

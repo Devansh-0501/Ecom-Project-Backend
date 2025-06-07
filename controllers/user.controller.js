@@ -68,6 +68,7 @@ const createUser = async (req,res)=>{
 
 const logoutUser =  (req,res)=>{
     try {
+     
         res.clearCookie("token",{
             httpOnly:true,
             secure:true,
