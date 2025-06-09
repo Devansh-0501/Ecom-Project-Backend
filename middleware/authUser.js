@@ -7,7 +7,7 @@ const authenticateUser = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-      console.log("authUser: No token found");
+     
       return res.status(401).json({ message: "User not authenticated" });
     }
 
@@ -18,12 +18,12 @@ const authenticateUser = async (req, res, next) => {
     const user = await userModel.findOne({ email: decrypt.email });
 
     if (!user) {
-      console.log("authUser: User not found");
+      
       return res.status(404).json({ message: "User not found" });
     }
 
     req.user = user;
-    console.log("authUser: User authenticated", user.email);
+    
 
     return next();  // Continue to the next middleware
 

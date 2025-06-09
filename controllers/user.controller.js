@@ -83,4 +83,73 @@ const logoutUser =  (req,res)=>{
     }
 }
 
-module.exports = {createUser,loginUser,logoutUser}
+const updateCart = async (req, res) => {
+  const { productId,decreament } = req.body;
+
+  if (!productId) {
+    return res.status(400).json({ message: "Product ID is required" });
+  }
+
+  try {
+    // Find user using the authenticated user ID (set by middleware)
+    const user = await userModel.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Convert both to strings for safe comparison
+    const itemIndex = user.cart.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+    if(decreament){
+     
+      
+       user.cart[itemIndex].quantity =  user.cart[itemIndex].quantity - 2;
+      
+    }
+
+    if (itemIndex > -1) {
+      // Product already in cart: increase quantity
+      user.cart[itemIndex].quantity += 1;
+    } else {
+      // Product not in cart: add it
+      user.cart.push({ productId, quantity: 1 });
+    }
+
+    await user.save();
+
+    res.json({ message: "Cart updated successfully", cart: user.cart });
+  } catch (error) {
+    console.error("Update Cart Error:", error.message);
+    res.status(500).json({ message: "Error updating cart" });
+  }
+};
+
+
+const getCart = async (req,res)=>{
+  try {
+  const user = await userModel.findById(req.user._id).populate("cart.productId");
+  const cart = user.cart;
+  res.json({message:"Cart fetched successfully",cart});
+
+    
+  } catch (error) {
+    res.status(500).json({message:"Error in fetching Cart"})
+  }
+}
+
+const clearCart = async (req,res)=>{
+  try {
+    const user = await userModel.findOne({_id:req.user._id});
+    user.cart=[];
+   
+    console.log(user,user.cart)
+    await user.save();
+    res.json({message:"Cart cleared"})
+  } catch (error) {
+    res.status(500).json({message:"Error in deleting Cart"})
+  }
+}
+
+module.exports = {createUser,loginUser,logoutUser,updateCart,getCart,clearCart}
