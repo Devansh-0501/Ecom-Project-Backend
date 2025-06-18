@@ -40,7 +40,13 @@ const loginUser = async (req, res) => {
   }
 };
 
-
+const isLogin = async(req,res) => {
+  try {
+    res.status(200).json({message:"User loggedIn"})
+  } catch (error) {
+    res.status(401).json(({message:"User Login error",error}))
+  }
+}
 
 const createUser = async (req,res)=>{
     let {name,password,email,role} = req.body;
@@ -166,4 +172,4 @@ const clearCart = async (req,res)=>{
   }
 }
 
-module.exports = {createUser,loginUser,logoutUser,updateCart,getCart,clearCart}
+module.exports = {createUser,loginUser,logoutUser,updateCart,getCart,clearCart,isLogin}

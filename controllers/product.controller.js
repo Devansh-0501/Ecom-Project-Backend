@@ -4,6 +4,34 @@ const productModel=require('../models/products.model.js')
 
 
 
+const searchProduct = async (req, res) => {
+  try {
+    const { search,category } = req.query;
+
+    const filter = {};
+
+    // 🔍 Search by product name (case-insensitive)
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+
+    
+
+    // 📦 Filter by category if provided
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await productModel.find(filter);
+
+    res.status(200).json({ product: products });
+  } catch (error) {
+    console.error("Error fetching products:", error.message);
+    res.status(500).json({ message: "Error fetching products" });
+  }
+};
+
+
 const createProduct = async (req,res)=>{
     let product = req.body;
     if(!product.name || !product.image || !product.price || !product.desc)
@@ -16,7 +44,8 @@ const createProduct = async (req,res)=>{
             name: product.name, 
             price: product.price, 
             image: product.image,
-            desc: product.desc
+            desc: product.desc,
+            category : product.category
         })
         console.log(createdProduct)
          res.status(201).json({ message: "Product created", createdProduct });
@@ -57,8 +86,8 @@ const deleteProduct = async (req,res) => {
 const updateProduct = async (req,res) => {
     try {
         const {id}=req.params;
-        const {name,price,image,desc}=req.body;
-        let updatedProduct = await productModel.findByIdAndUpdate(id,{name,price,image,desc})
+        const {name,price,image,desc,category}= req.body;
+        let updatedProduct = await productModel.findByIdAndUpdate(id,{name,price,image,desc,category})
         res.status(200).json({message:"Product Updated Successfully",updatedProduct})
         
     } catch (error) {
@@ -78,4 +107,4 @@ const singleProduct = async (req,res) => {
     }
 
 }
-module.exports = { createProduct, getProduct,deleteProduct,updateProduct,singleProduct };
+module.exports = { createProduct, getProduct,deleteProduct,updateProduct,singleProduct,searchProduct };
